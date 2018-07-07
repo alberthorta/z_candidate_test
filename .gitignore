@@ -1,0 +1,5 @@
+.idea
+.vagrant
+ubuntu-bionic-*.log
+zeelo/var/cache
+zeelo/var/log
