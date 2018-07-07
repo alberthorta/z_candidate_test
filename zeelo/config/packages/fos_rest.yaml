@@ -13,3 +13,4 @@ fos_rest:
     exception:
         codes:
             'FOS\RestBundle\Exception\InvalidParameterException': 400
+            'App\Domain\Exceptions\InvalidUrlException': 400
