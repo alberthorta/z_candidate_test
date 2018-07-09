@@ -65,14 +65,18 @@ The ```ItemRepositoryDoctrine``` is the responsible of calling the specific Doct
 
     ItemController   ---------->   ItemUseCases   --------->   Entity
     
-                                       / \
-                                        |
-                                        |
-                                        |
-                                        |
-                                    
-                              ItemRepositoryDoctrine
+         / \                            / \                        
+          |                              |
+          |     ____ (injects) _________/                                                 
+          |    |                  
+          |    |                                                      
+          |    |
+          |    |                                                     
+          |    |
+          |    |                        
                           
+ItemRepositoryDoctrine.   <- - - - - (implements) - - - - -   ItemRepository
+                                  
                                   
 ```
 
