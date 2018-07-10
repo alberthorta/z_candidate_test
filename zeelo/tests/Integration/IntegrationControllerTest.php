@@ -111,7 +111,7 @@ class ItemIntegrationTest extends KernelTestCase
 
         $elements_after_insert = count($this->userCaseInstance->listItems(0, PHP_INT_MAX));
 
-        $this->assertInstanceOf(Item::class, $item);
+        $this->assertInternalType('array', $item);
         $this->assertGreaterThan($elements_before_insert, $elements_after_insert);
     }
 
@@ -134,7 +134,7 @@ class ItemIntegrationTest extends KernelTestCase
 
         $elements_after_insert = count($this->userCaseInstance->listItems(0, PHP_INT_MAX));
 
-        $this->assertInstanceOf(Item::class, $item);
+        $this->assertInternalType('array', $item);
         $this->assertEquals($elements_before_insert, $elements_after_insert);
     }
 
@@ -148,7 +148,7 @@ class ItemIntegrationTest extends KernelTestCase
         $this->assertInternalType('array', $items);
 
         foreach($items as $item) {
-            $this->assertInstanceOf(Item::class, $item);
+            $this->assertInternalType('array', $item);
         }
     }
 
@@ -165,10 +165,8 @@ class ItemIntegrationTest extends KernelTestCase
 
         $item = $this->userCaseInstance->createItem($url, $title, $name, $price);
 
-        $item_retrieved = $this->userCaseInstance->getItem($item->getId());
+        $item_retrieved = $this->userCaseInstance->getItem($item['id']);
 
         $this->assertEquals($item, $item_retrieved);
-
-        $this->assertFalse($item->isNew());
     }
 }

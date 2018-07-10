@@ -3,63 +3,59 @@
 namespace App\Domain\Entity;
 
 use App\Domain\ValueObjects\Url;
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class Item
  * @package App\Domain\Entity
- * @ORM\Entity
- * @ORM\Table(name="item")
- * @Serializer\ExclusionPolicy("none")
- * @ORM\Entity(repositoryClass="App\Infrastructure\Repository\ItemRepositoryDoctrine")
  */
 class Item
 {
     /**
-     * @todo: Warning, this const seems to be too coupled to our API url system, we should evaluate a way to fix this problem. Move this constant to a configuration value would be an option.
-     */
-    const API_ROUTE_LINK_PREFIX = "/api/v1/items/";
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serializer\Groups({"entityFields","itemList"})
+     * Item ID
+     * @var int|null
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=200)
-     * @Serializer\Groups({"entityFields"})
+     * URL of an image of the item
+     * @var Url
      */
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=200)
-     * @Serializer\Groups({"entityFields","itemList"})
+     * Title of the item
+     * @var string
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=200)
-     * @Serializer\Groups({"entityFields"})
+     * Author of the item
+     * @var string
      */
     private $author;
 
     /**
-     * @ORM\Column(type="float")
-     * @Serializer\Groups({"entityFields"})
+     * Price of the item
+     * @var float
      */
     private $price;
 
     /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\Groups({"itemList"})
+     * Returns an Array representation of the items on the entity
+     * @return array
+     *
+     * @note: Could have been implemented ArrayAccess interface but I think not necessary in this case
      */
-    public function getLink()
+    public function asArray()
     {
-        return static::API_ROUTE_LINK_PREFIX.$this->id;
+        return [
+            'id' => $this->id,
+            'image' => (string) $this->image,
+            'title' => $this->title,
+            'author' => $this->author,
+            'price' => $this->price,
+        ];
     }
 
     /**
@@ -67,15 +63,7 @@ class Item
      */
     public function isNew()
     {
-        return $this->getId()===null;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId()
-    {
-        return $this->id;
+        return ((object) $this->asArray())->id === null;
     }
 
     /**

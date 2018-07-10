@@ -1,0 +1,22 @@
+# config/doctrine/Item.orm.yml
+App\Domain\Entity\Item:
+  type: entity
+  repositoryClass: App\Infrastructure\Repository\ItemRepositoryDoctrine
+  table: item
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    image:
+      type: string
+      length: 200
+    title:
+      type: string
+      length: 200
+    author:
+      type: string
+      length: 200
+    price:
+      type: float

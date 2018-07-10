@@ -43,7 +43,16 @@ class ItemController extends Controller
      */
     public function getItemsAction(ItemUseCases $itemUseCases, int $offset, int $count): Response
     {
-        $items = $itemUseCases->listItems($offset, $count);
+        $items = array_map(
+            function ($item) {
+                return [
+                    'id' => $item['id'],
+                    'title' => $item['title'],
+                    'link' => "/api/v1/items/{$item['id']}",
+                ];
+            },
+            $itemUseCases->listItems($offset, $count)
+        );
 
         return $this->renderItems($items, static::RENDER_GROUP_LISTITEMS);
     }
@@ -106,8 +115,13 @@ class ItemController extends Controller
      * @return Response
      * @throws \App\Domain\Exceptions\InvalidUrlException
      */
-    public function postItemAction(ItemUseCases $itemUseCases, string $image, string $title, string $author, float $price): Response
-    {
+    public function postItemAction(
+        ItemUseCases $itemUseCases,
+        string $image,
+        string $title,
+        string $author,
+        float $price
+    ): Response {
         $item = $itemUseCases->createItem($image, $title, $author, $price);
 
         return $this->renderItems($item);
@@ -121,13 +135,10 @@ class ItemController extends Controller
      * @param string $renderGroup
      * @return Response
      */
-    private function renderItems($items, $renderGroup = self::RENDER_GROUP_QUERYITEMS)
+    private function renderItems($items)
     {
-        $view = $this->view($items, 200);
-        $context = $view->getContext();
-        $context->setGroups([$renderGroup]);
-        $view->setContext($context);
-
-        return $this->handleView($view);
+        return $this->handleView(
+            $this->view($items, 200)
+        );
     }
 }

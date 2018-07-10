@@ -42,15 +42,4 @@ class ItemTest extends UnitTestBaseClass
         $item = $this->createItem($this->faker->randomNumber());
         $this->assertFalse($item->isNew());
     }
-
-    /**
-     * Test that the getLink method metches the logic
-     * @throws \App\Domain\Exceptions\InvalidUrlException
-     */
-    public function testReturnsAValidLink()
-    {
-        $id = $this->faker->randomNumber();
-        $item = $this->createItem($id);
-        $this->assertStringEndsWith((string)$id, $item->getLink());
-    }
 }

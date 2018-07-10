@@ -40,11 +40,18 @@ class ItemUseCasesTest extends UnitTestBaseClass
         $name  = $this->faker->name;
         $price = $this->faker->randomFloat(2,10,60);
 
-        $this->repositoryMock->shouldReceive('save')->with(\Mockery::type(Item::class));
+        $mockItem = \Mockery::mock(Item::class);
+        $mockItem->allows()->asArray()->andReturns([
+            "id" => $this->faker->randomNumber(),
+            "image" => $url,
+            "title" => $name,
+            "price" => $price
+        ]);
+        $this->repositoryMock->shouldReceive('save')->with(\Mockery::type(Item::class))->andReturn($mockItem);
 
         $item = $this->userCaseInstance->createItem($url, $title, $name, $price);
 
-        $this->assertInstanceOf('App\Domain\Entity\Item', $item);
+        $this->assertInternalType('array', $item);
     }
 
     /**
@@ -75,7 +82,7 @@ class ItemUseCasesTest extends UnitTestBaseClass
 
         $item = $this->userCaseInstance->getItem($id);
 
-        $this->assertInstanceOf(Item::class, $item);
-        $this->assertFalse($item->isNew());
+        $this->assertInternalType('array', $item);
+        $this->assertTrue($item['id']!==0);
     }
 }

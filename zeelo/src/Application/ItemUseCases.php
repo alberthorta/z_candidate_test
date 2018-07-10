@@ -38,17 +38,18 @@ class ItemUseCases
      * @return Item
      * @throws \App\Domain\Exceptions\InvalidUrlException
      */
-    public function createItem(string $image, string $title, string $author, float $price)
+    public function createItem(string $image, string $title, string $author, float $price): array
     {
-        return $this->repository->save(
-            new Item(
-                null,
-                new Url($image),
-                $title,
-                $author,
-                $price
-            )
+        $item = new Item(
+            null,
+            new Url($image),
+            $title,
+            $author,
+            $price
         );
+        return $this->repository->save(
+            $item
+        )->asArray();
     }
 
     /**
@@ -58,15 +59,17 @@ class ItemUseCases
      */
     public function listItems(int $offset, int $count): array
     {
-        return $this->repository->all($offset, $count);
+        return array_map(function(Item $item) {
+            return $item->asArray();
+        }, $this->repository->all($offset, $count));
     }
 
     /**
      * @param int $item_id
      * @return Item|null
      */
-    public function getItem(int $item_id): ?Item
+    public function getItem(int $item_id): ?array
     {
-        return $this->repository->search($item_id);
+        return $this->repository->search($item_id)->asArray();
     }
 }
