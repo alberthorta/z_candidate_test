@@ -36,17 +36,13 @@ class ItemController extends Controller
      *     default="10",
      *     description="Number of items to return"
      * )
+     * @param ItemUseCases $itemUseCases
      * @param int $offset
      * @param int $count
      * @return Response
      */
-    public function getItemsAction(int $offset, int $count): Response
+    public function getItemsAction(ItemUseCases $itemUseCases, int $offset, int $count): Response
     {
-        $itemUseCases = new ItemUseCases(
-            $this->getDoctrine()
-                ->getRepository('App\Domain\Entity\Item')
-        );
-
         $items = $itemUseCases->listItems($offset, $count);
 
         return $this->renderItems($items, static::RENDER_GROUP_LISTITEMS);
@@ -60,16 +56,12 @@ class ItemController extends Controller
      *         "id" = "\d+"
      *     }
      * )
+     * @param ItemUseCases $itemUseCases
      * @param int $id
      * @return Response
      */
-    public function getItemAction(int $id): Response
+    public function getItemAction(ItemUseCases $itemUseCases, int $id): Response
     {
-        $itemUseCases = new ItemUseCases(
-            $this->getDoctrine()
-                ->getRepository('App\Domain\Entity\Item')
-        );
-
         $items = $itemUseCases->getItem($id);
 
         return $this->renderItems($items);
@@ -106,14 +98,16 @@ class ItemController extends Controller
      *     strict=true,
      *     nullable=false
      * )
+     * @param ItemUseCases $itemUseCases
+     * @param string $image
+     * @param string $title
+     * @param string $author
+     * @param float $price
+     * @return Response
+     * @throws \App\Domain\Exceptions\InvalidUrlException
      */
-    public function postItemAction(string $image, string $title, string $author, float $price): Response
+    public function postItemAction(ItemUseCases $itemUseCases, string $image, string $title, string $author, float $price): Response
     {
-        $itemUseCases = new ItemUseCases(
-            $this->getDoctrine()
-                ->getRepository('App\Domain\Entity\Item')
-        );
-
         $item = $itemUseCases->createItem($image, $title, $author, $price);
 
         return $this->renderItems($item);

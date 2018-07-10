@@ -10,12 +10,23 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Item;
 use App\Domain\Entity\ItemRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 
-class ItemRepositoryDoctrine extends EntityRepository implements ItemRepository
+class ItemRepositoryDoctrine extends ServiceEntityRepository implements ItemRepository
 {
+    /**
+     * ItemRepositoryDoctrine constructor.
+     * @param ManagerRegistry $registry
+     * @param string $entityClass
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, 'App\Domain\Entity\Item');
+    }
+
     /**
      * @param Item $item
      * @return Item
