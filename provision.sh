@@ -53,6 +53,8 @@ mkdir -p /home/vagrant/zeelo/log
 mkdir -p /home/vagrant/zeelo/cache
 rm -R /vagrant/zeelo/var/log
 rm -R /vagrant/zeelo/var/cache
+chown vagrant.vagrant /vagrant/zeelo/var/log
+chown vagrant.vagrant /vagrant/zeelo/var/cache
 ln -s /home/vagrant/zeelo/log /vagrant/zeelo/var/log
 ln -s /home/vagrant/zeelo/cache /vagrant/zeelo/var/cache
 cd /vagrant/zeelo
