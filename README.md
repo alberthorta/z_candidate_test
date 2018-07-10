@@ -61,18 +61,23 @@ Basically through the definition of ```QueryParams``` and ```RequestParams``` I'
 The ```ItemRepositoryDoctrine``` is the responsible of calling the specific Doctrine layer implementing the ```ItemRepository``` interface.
 
 ```
-
-
+    INFRASTRUCTURE       |         APPLICATION        |        DOMAIN
+                         |                            |
+                         |                            |
     ItemController   ---------->   ItemUseCases   --------->   Entity
-    
-                                       / \
-                                        |
-                                        |
-                                        |
-                                        |
-                                    
-                              ItemRepositoryDoctrine
-                          
+                         |                            |
+         / \             |              / \           |             
+          |              |               |            | 
+          |     ____ (injects) _________/             |                                    
+          |    |         |                            |
+          |    |         |                            |                 
+          |    |         |                            |
+          |    |         |                            |                
+          |    |         |                            |
+          |    |         |                            |
+                         |                            | 
+ItemRepositoryDoctrine < - - - - - (implements) - - - - -   ItemRepository
+                         |                            |
                                   
 ```
 
